@@ -1,0 +1,6 @@
+{
+  "eslint.debug": false,
+  "eslint.enable": true,
+  "eslint.problems.shortenToSingleLine": false,
+  "eslint.run": "onType"
+}
