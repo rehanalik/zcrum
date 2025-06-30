@@ -30,9 +30,10 @@ export default function RootLayout({ children }) {
           headerSubtitle: { color: "#9ca3af" },
         },
       }}
+      dynamic
     >
-      <html lang="en">
-        <body className={`${inter.className}`}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className}`} suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="dark">
             <Header />
             <main className="min-h-screen">{children}</main>
