@@ -21,7 +21,10 @@ const Header = () => {
         </Link>
         <div className="flex items-center gap-4">
           <Link href="/project/create">
-            <Button variant="destructive" className="flex items-center gap-2">
+            <Button
+              variant="destructive"
+              className="flex items-center gap-2 cursor-pointer"
+            >
               <PenBox size={18} />
               <span>Create Project</span>
             </Button>

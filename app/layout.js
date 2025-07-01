@@ -33,7 +33,10 @@ export default function RootLayout({ children }) {
       dynamic
     >
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className}`} suppressHydrationWarning>
+        <body
+          className={`${inter.className} dotted-background`}
+          suppressHydrationWarning
+        >
           <ThemeProvider attribute="class" defaultTheme="dark">
             <Header />
             <main className="min-h-screen">{children}</main>
