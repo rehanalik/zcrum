@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       }}
       dynamic
     >
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" className="scroll-smooth" suppressHydrationWarning>
         <body
           className={`${inter.className} dotted-background`}
           suppressHydrationWarning
