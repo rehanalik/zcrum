@@ -13,6 +13,7 @@ import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BarLoader } from "react-spinners";
 import OrgSwitcher from "@/components/org-switcher";
+import { toast } from "sonner";
 
 export default function CreateProjectPage() {
   const router = useRouter();
@@ -43,6 +44,12 @@ export default function CreateProjectPage() {
     data: project,
     fn: createProjectFn,
   } = useFetch(createProject);
+
+  useEffect(() => {
+    if (project) {
+      toast.success("Project created successfully.");
+    }
+  }, [project]);
 
   const onSubmit = async (data) => {
     if (!isAdmin) {
