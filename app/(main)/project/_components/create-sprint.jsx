@@ -18,6 +18,7 @@ import { Calendar1Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const SprintCreationForm = ({
   projectTitle,
@@ -57,6 +58,7 @@ const SprintCreationForm = ({
     });
     setShowForm(false);
     router.refresh();
+    toast.success("Sprint created successfully.");
   };
 
   return (
