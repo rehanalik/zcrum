@@ -1,6 +1,7 @@
 import { getProjects } from "@/actions/projects";
 import { notFound } from "next/navigation";
 import SprintCreationForm from "../_components/create-sprint";
+import SprintBoard from "../_components/sprint-board";
 
 export default async function ProjectPage({ params }) {
   const { projectId } = await params;
@@ -18,6 +19,16 @@ export default async function ProjectPage({ params }) {
         projectKey={project.key}
         sprintKey={project.sprints?.length + 1}
       />
+
+      {project.sprints.length > 0 ? (
+        <SprintBoard
+          sprints={project.sprints}
+          projectId={projectId}
+          orgId={project.organizationId}
+        />
+      ) : (
+        <div>Create a Sprint from button above</div>
+      )}
     </div>
   );
 }
