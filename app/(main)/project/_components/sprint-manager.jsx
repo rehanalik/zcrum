@@ -1,6 +1,7 @@
 "use client";
 
 import { updateSprintStatus } from "@/actions/sprints";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -12,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
-import { format, isAfter, isBefore } from "date-fns";
+import { format, formatDistanceToNow, isAfter, isBefore } from "date-fns";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -52,6 +53,19 @@ const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
     }
   }, [updatedStatus, setSprint]);
 
+  const getStatusText = () => {
+    if (sprintStatus === "COMPLETED") {
+      return `Sprint Ended`;
+    }
+    if (sprintStatus === "ACTIVE" && isAfter(now, endDate)) {
+      return `Overdue by ${formatDistanceToNow(endDate)}`;
+    }
+    if (sprintStatus === "PLANNED" && isBefore(now, startDate)) {
+      return `Starts in ${formatDistanceToNow(startDate)}`;
+    }
+    return null;
+  };
+
   return (
     <>
       <div className="flex gap-4">
@@ -90,7 +104,13 @@ const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
             </Button>
           )}
         </div>
+        {loading && (
+          <BarLoader width={"100%"} className="mt-2" color="#8e51ff" />
+        )}
       </div>
+      {getStatusText() && (
+        <Badge className="mt-3 ml-1 self-start">{getStatusText()}</Badge>
+      )}
     </>
   );
 };
