@@ -16,6 +16,7 @@ import useFetch from "@/hooks/use-fetch";
 import { format, formatDistanceToNow, isAfter, isBefore } from "date-fns";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { BarLoader } from "react-spinners";
 
 const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
   const [sprintStatus, setSprintStatus] = useState(sprint.status);
