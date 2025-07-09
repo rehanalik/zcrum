@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MDEditor from "@uiw/react-md-editor";
+import { toast } from "sonner";
 
 const IssueCreationDrawer = ({
   isOpen,
@@ -56,6 +57,7 @@ const IssueCreationDrawer = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(issueSchema),
     defaultValues: {
@@ -69,7 +71,20 @@ const IssueCreationDrawer = ({
     if (isOpen && orgId) fetchUsers(orgId);
   }, [isOpen, orgId]);
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    await createIssueFn(projectId, {
+      ...data,
+      status,
+      sprintId,
+    });
+  };
+
+  useEffect(() => {
+    reset();
+    onClose();
+    onIssueCreated();
+    toast.success("Issue Created");
+  }, [newIssue, createIssueLoading]);
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
@@ -78,14 +93,16 @@ const IssueCreationDrawer = ({
           <DrawerTitle>Create Issue</DrawerTitle>
         </DrawerHeader>
         {usersLoading && <BarLoader width={"100%"} color="#8e51ff" />}
-        <form className="p-4 space-y-4">
+        <form className="p-4 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label htmlFor="title" className="block text-sm font-medium mb-1">
               Title
             </label>
             <Input id="title" {...register("title")} />
             {errors.title && (
-              <p className="text-red-500 text-sm mt-1">{error.title.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
             )}
           </div>
           <div>
@@ -121,7 +138,7 @@ const IssueCreationDrawer = ({
             />
             {errors.assigneeId && (
               <p className="text-red-500 text-sm mt-1">
-                {error.title.assigneeId}{" "}
+                {errors.assigneeId.message}
               </p>
             )}
           </div>
@@ -141,7 +158,7 @@ const IssueCreationDrawer = ({
             />
             {errors.description && (
               <p className="text-red-500 text-sm mt-1">
-                {error.description.message}
+                {errors.description.message}
               </p>
             )}
           </div>
@@ -178,6 +195,13 @@ const IssueCreationDrawer = ({
           {error && (
             <p className="text-red-500 text-sm mt-1">{error?.message}</p>
           )}
+          <Button
+            type="submit"
+            disabled={createIssueLoading}
+            className="w-full"
+          >
+            {createIssueLoading ? "Creating..." : "Create Issue"}
+          </Button>
         </form>
       </DrawerContent>
     </Drawer>
