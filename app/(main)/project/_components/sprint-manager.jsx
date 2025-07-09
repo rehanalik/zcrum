@@ -69,6 +69,7 @@ const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
 
   return (
     <>
+      {loading && <BarLoader width={"100%"} className="mb-2" color="#8e51ff" />}
       <div className="flex gap-4">
         <div className="flex-1">
           <Select value={sprint.id} onValueChange={handleSprintChange}>
@@ -105,9 +106,6 @@ const SprintManager = ({ sprint, setSprint, sprints, projectId }) => {
             </Button>
           )}
         </div>
-        {loading && (
-          <BarLoader width={"100%"} className="mt-2" color="#8e51ff" />
-        )}
       </div>
       {getStatusText() && (
         <Badge className="mt-3 ml-1 self-start">{getStatusText()}</Badge>
