@@ -39,3 +39,48 @@ export async function createIssue(projectId, data) {
 
   return issue;
 }
+
+export async function getIssuesForSprint(sprintId) {
+  const { userId, orgId } = await auth();
+
+  if (!userId || !orgId) {
+    throw new Error("Unauthorized");
+  }
+
+  const issues = await db.issue.findMany({
+    where: {
+      sprintId,
+    },
+    orderBy: [{ status: "asc" }, { order: "asc" }],
+    include: {
+      assignee: true,
+      reporter: true,
+    },
+  });
+
+  return issues;
+}
+
+export async function updateIssueOrder(updateIssues) {
+  const { userId, orgId } = await auth();
+
+  if (!userId || !orgId) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.$transaction(async (prisma) => {
+    for (const issue of updateIssues) {
+      await prisma.issue.update({
+        where: {
+          id: issue.id,
+        },
+        data: {
+          status: issue.status,
+          order: issue.order,
+        },
+      });
+    }
+  });
+
+  return { success: true };
+}
