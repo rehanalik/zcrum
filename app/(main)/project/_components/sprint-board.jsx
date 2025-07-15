@@ -10,6 +10,7 @@ import IssueCreationDrawer from "./create-issue";
 import useFetch from "@/hooks/use-fetch";
 import { getIssuesForSprint, updateIssueOrder } from "@/actions/issues";
 import IssueCard from "@/components/issue-card";
+import { toast } from "sonner";
 
 function reorder(list, startIndex, endIndex) {
   const result = Array.from(list);
@@ -114,12 +115,19 @@ const SprintBoard = ({ sprints, projectId, orgId }) => {
     }
   };
 
+  const handleDrawerClose = () => {
+    setIsDrawerOpen(false);
+    document.body.style.overflow = ""; // Reset scroll lock
+  };
+
   const handleAddIssue = (status) => {
     setSelectedStatus(status);
     setIsDrawerOpen(true);
   };
 
-  const handleIssueCreated = () => {};
+  const handleIssueCreated = () => {
+    fetchIssues(currentSprint.id);
+  };
 
   return (
     <div className="flex flex-col">
@@ -193,7 +201,7 @@ const SprintBoard = ({ sprints, projectId, orgId }) => {
       </DragDropContext>
       <IssueCreationDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleDrawerClose}
         sprintId={currentSprint.id}
         status={selectedStatus}
         projectId={projectId}

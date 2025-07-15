@@ -80,10 +80,12 @@ const IssueCreationDrawer = ({
   };
 
   useEffect(() => {
-    reset();
-    onClose();
-    onIssueCreated();
-    toast.success("Issue Created");
+    if (newIssue && !createIssueLoading) {
+      reset();
+      onClose();
+      onIssueCreated();
+      toast.success("Issue Created");
+    }
   }, [newIssue, createIssueLoading]);
 
   return (
